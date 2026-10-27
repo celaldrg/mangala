@@ -1,0 +1,11 @@
+{
+  "name": "mangala",
+  "version": "1.0.0",
+  "description": "Mangala, the traditional Turkish mancala game, in the browser: play against the computer or a friend on one device.",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "test": "node --test"
+  },
+  "license": "MIT"
+}

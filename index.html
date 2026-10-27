@@ -1,0 +1,157 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Mangala</title>
+  <meta name="description" content="Play Mangala, the traditional Turkish mancala game, in your browser: sow stones, capture pits and fill your treasury against the computer or a friend.">
+  <meta name="theme-color" content="#0f172a">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Mangala">
+  <meta property="og:description" content="The traditional Turkish mancala game in your browser. Play the computer on three levels or a friend on one device.">
+  <meta property="og:url" content="https://celaldrg.github.io/mangala/">
+  <meta property="og:image" content="https://celaldrg.github.io/mangala/docs/screenshot.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect x='2' y='14' width='60' height='36' rx='14' fill='%23a0662f'/%3E%3Crect x='7' y='19' width='8' height='26' rx='4' fill='%233b2210'/%3E%3Crect x='49' y='19' width='8' height='26' rx='4' fill='%233b2210'/%3E%3Ccircle cx='24' cy='25' r='4.5' fill='%233b2210'/%3E%3Ccircle cx='32' cy='25' r='4.5' fill='%233b2210'/%3E%3Ccircle cx='40' cy='25' r='4.5' fill='%233b2210'/%3E%3Ccircle cx='24' cy='39' r='4.5' fill='%233b2210'/%3E%3Ccircle cx='32' cy='39' r='4.5' fill='%233b2210'/%3E%3Ccircle cx='40' cy='39' r='4.5' fill='%233b2210'/%3E%3Ccircle cx='32' cy='39' r='2.4' fill='%23f59e0b'/%3E%3Ccircle cx='40' cy='25' r='2.4' fill='%23f43f5e'/%3E%3Ccircle cx='53' cy='36' r='2.4' fill='%23f59e0b'/%3E%3C/svg%3E">
+  <link rel="stylesheet" href="style.css">
+  <script type="module" src="src/main.js"></script>
+</head>
+<body>
+  <header class="topbar">
+    <h1 class="brand">
+      <svg class="logo" viewBox="0 0 64 64" aria-hidden="true" focusable="false">
+        <rect x="2" y="14" width="60" height="36" rx="14" fill="#a0662f"/>
+        <rect x="2" y="14" width="60" height="18" rx="9" fill="#b9793f" opacity=".55"/>
+        <rect x="7" y="19" width="8" height="26" rx="4" fill="#3b2210"/>
+        <rect x="49" y="19" width="8" height="26" rx="4" fill="#3b2210"/>
+        <circle cx="24" cy="25" r="4.5" fill="#3b2210"/>
+        <circle cx="32" cy="25" r="4.5" fill="#3b2210"/>
+        <circle cx="40" cy="25" r="4.5" fill="#3b2210"/>
+        <circle cx="24" cy="39" r="4.5" fill="#3b2210"/>
+        <circle cx="32" cy="39" r="4.5" fill="#3b2210"/>
+        <circle cx="40" cy="39" r="4.5" fill="#3b2210"/>
+        <circle cx="32" cy="39" r="2.4" fill="#f59e0b"/>
+        <circle cx="40" cy="25" r="2.4" fill="#f43f5e"/>
+        <circle cx="24" cy="25" r="2.4" fill="#2dd4bf"/>
+        <circle cx="53" cy="36" r="2.4" fill="#f59e0b"/>
+        <circle cx="53" cy="29" r="2.4" fill="#3b82f6"/>
+      </svg>
+      <span>Mangala</span>
+    </h1>
+    <div class="topbar-actions">
+      <button id="new-game" class="btn btn-primary" type="button">
+        <svg class="icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M20 12a8 8 0 1 1-2.34-5.66"/><path d="M20 4v6h-6"/></svg>
+        <span data-i18n="newGame">New game</span>
+      </button>
+      <button id="language" class="btn btn-lang" type="button" data-i18n="langButton" data-i18n-label="langSwitch" aria-label="Switch to Turkish">TR</button>
+    </div>
+  </header>
+
+  <main class="app">
+    <section class="table" data-i18n-label="boardLabel" aria-label="Mangala board">
+      <div class="player top" id="player-1">
+        <span class="player-dot" aria-hidden="true"></span>
+        <span class="player-name">Computer</span>
+        <span class="player-tag">Medium</span>
+        <span class="player-score-wrap">
+          <span class="player-caption" data-i18n="scoreLabel">Treasury</span>
+          <span class="player-score">0</span>
+        </span>
+      </div>
+      <div class="board" id="board"></div>
+      <div class="player bottom" id="player-0">
+        <span class="player-dot" aria-hidden="true"></span>
+        <span class="player-name">You</span>
+        <span class="player-tag" hidden></span>
+        <span class="player-score-wrap">
+          <span class="player-caption" data-i18n="scoreLabel">Treasury</span>
+          <span class="player-score">0</span>
+        </span>
+      </div>
+    </section>
+
+    <div class="feed" aria-live="polite">
+      <p class="status" id="status"></p>
+      <p class="final-score" id="final-score" hidden></p>
+      <div class="events" id="events"></div>
+      <button id="play-again" class="btn btn-primary" type="button" data-i18n="playAgain" hidden>Play again</button>
+    </div>
+
+    <div class="toolbar">
+      <button id="undo" class="btn" type="button">
+        <svg class="icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M9 14 4 9l5-5"/><path d="M4 9h11a5 5 0 0 1 0 10h-4"/></svg>
+        <span data-i18n="undo">Undo</span>
+      </button>
+      <button id="skip" class="btn" type="button" disabled>
+        <svg class="icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="m5 6 6 6-6 6"/><path d="m13 6 6 6-6 6"/></svg>
+        <span data-i18n="skip">Skip</span>
+      </button>
+      <button id="speed" class="btn" type="button">
+        <svg class="icon icon-keep" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M4.7 17a8.5 8.5 0 1 1 14.6 0"/><path d="m12 14 4-5"/></svg>
+        <span id="speed-label">Normal</span>
+      </button>
+      <button id="rules" class="btn" type="button">
+        <svg class="icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 6.5C10 5 7 4.5 4 5v13.5c3-.5 6 0 8 1.5 2-1.5 5-2 8-1.5V5c-3-.5-6 0-8 1.5Z"/><path d="M12 6.5V20"/></svg>
+        <span data-i18n="rules">Rules</span>
+      </button>
+    </div>
+    <p class="keys-hint" data-i18n="keysHint">Keys: 1–6 or ← → and Enter to play · U undo · N new game · S skip</p>
+  </main>
+
+  <footer class="footer">
+    <span>MIT</span> · <a href="https://github.com/celaldrg/mangala" data-i18n="source">Source on GitHub</a>
+  </footer>
+
+  <dialog id="setup" aria-labelledby="setup-title">
+    <form method="dialog" class="dialog-body">
+      <h2 id="setup-title" data-i18n="newGame">New game</h2>
+      <fieldset class="choice">
+        <legend data-i18n="setupMode">Mode</legend>
+        <div class="segmented">
+          <label><input type="radio" name="mode" value="ai" checked><span data-i18n="modeAi">vs Computer</span></label>
+          <label><input type="radio" name="mode" value="local"><span data-i18n="modeLocal">2 players</span></label>
+        </div>
+      </fieldset>
+      <fieldset class="choice" data-ai-only>
+        <legend data-i18n="setupLevel">Level</legend>
+        <div class="segmented">
+          <label><input type="radio" name="level" value="easy"><span data-i18n="levelEasy">Easy</span></label>
+          <label><input type="radio" name="level" value="medium" checked><span data-i18n="levelMedium">Medium</span></label>
+          <label><input type="radio" name="level" value="hard"><span data-i18n="levelHard">Hard</span></label>
+        </div>
+      </fieldset>
+      <fieldset class="choice" data-ai-only>
+        <legend data-i18n="setupFirst">Who starts</legend>
+        <div class="segmented">
+          <label><input type="radio" name="first" value="0" checked><span data-i18n="nameYou">You</span></label>
+          <label><input type="radio" name="first" value="1"><span data-i18n="nameAi">Computer</span></label>
+        </div>
+      </fieldset>
+      <div class="dialog-actions">
+        <button class="btn" value="cancel" data-i18n="cancel">Cancel</button>
+        <button class="btn btn-primary" value="start" data-i18n="start">Start</button>
+      </div>
+    </form>
+  </dialog>
+
+  <dialog id="rules-dialog" aria-labelledby="rules-title">
+    <div class="dialog-body">
+      <h2 id="rules-title" data-i18n="rulesTitle" tabindex="-1" autofocus>How to play</h2>
+      <p class="rules-intro" data-i18n="rulesIntro">Mangala is the traditional Turkish mancala game for two players.</p>
+      <ol class="rules-list">
+        <li><strong data-i18n="rule1Title">Setup.</strong> <span data-i18n="rule1"></span></li>
+        <li><strong data-i18n="rule2Title">Sowing.</strong> <span data-i18n="rule2"></span></li>
+        <li><strong data-i18n="rule3Title">Single stone.</strong> <span data-i18n="rule3"></span></li>
+        <li><strong data-i18n="rule4Title">Extra turn.</strong> <span data-i18n="rule4"></span></li>
+        <li><strong data-i18n="rule5Title">Even capture.</strong> <span data-i18n="rule5"></span></li>
+        <li><strong data-i18n="rule6Title">Empty pit capture.</strong> <span data-i18n="rule6"></span></li>
+        <li><strong data-i18n="rule7Title">End of the game.</strong> <span data-i18n="rule7"></span></li>
+      </ol>
+      <p class="rules-terms" data-i18n="rulesTerms"></p>
+      <form method="dialog" class="dialog-actions">
+        <button class="btn btn-primary" data-i18n="close">Close</button>
+      </form>
+    </div>
+  </dialog>
+</body>
+</html>

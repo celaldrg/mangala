@@ -1,0 +1,827 @@
+/* Mangala: dark page, warm wooden board drawn with CSS gradients only. */
+
+:root {
+  --bg: #0f172a;
+  --surface: #1e293b;
+  --surface-2: #26344b;
+  --text: #e2e8f0;
+  --muted: #94a3b8;
+  --accent: #d97706;
+  --accent-bright: #f59e0b;
+  --accent-ink: #1c1003;
+  --focus: #fde68a;
+  --capture: #f87171;
+  --line: rgba(148, 163, 184, 0.16);
+  --radius: 12px;
+  --shadow: 0 18px 40px rgba(2, 6, 23, 0.5);
+  --shadow-soft: 0 6px 18px rgba(2, 6, 23, 0.35);
+  --ease: cubic-bezier(0.2, 0.7, 0.2, 1);
+  --t-fast: 150ms;
+  --t-mid: 200ms;
+  --t-slow: 250ms;
+  color-scheme: dark;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  background:
+    radial-gradient(900px 480px at 50% -12%, rgba(217, 119, 6, 0.16), transparent 70%),
+    radial-gradient(700px 500px at 100% 100%, rgba(30, 41, 59, 0.8), transparent 70%),
+    var(--bg);
+  color: var(--text);
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  line-height: 1.45;
+}
+
+[hidden] {
+  display: none !important;
+}
+
+/* ---------------------------------------------------------------- header and footer */
+
+.topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  width: min(1040px, 100%);
+  margin: 0 auto;
+  padding: 14px 16px 10px;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 0;
+  font-size: clamp(21px, 2.6vw, 26px);
+  font-weight: 800;
+  letter-spacing: 0.01em;
+}
+
+.logo {
+  width: 36px;
+  height: 36px;
+  flex: none;
+  filter: drop-shadow(0 3px 6px rgba(0, 0, 0, 0.45));
+}
+
+.topbar-actions {
+  display: flex;
+  gap: 8px;
+}
+
+.footer {
+  padding: 4px 16px 10px;
+  text-align: center;
+  color: var(--muted);
+  font-size: 13px;
+}
+
+.footer a {
+  display: inline-block;
+  padding: 11px 4px;
+  color: #fbbf24;
+  text-decoration-color: rgba(251, 191, 36, 0.4);
+  text-underline-offset: 3px;
+}
+
+.footer a:hover {
+  text-decoration-color: currentColor;
+}
+
+/* ---------------------------------------------------------------- buttons */
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  min-height: 40px;
+  padding: 0 14px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--surface);
+  color: var(--text);
+  font: inherit;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: var(--shadow-soft);
+  transition:
+    background-color var(--t-fast) var(--ease),
+    border-color var(--t-fast) var(--ease),
+    transform var(--t-fast) var(--ease),
+    opacity var(--t-mid) var(--ease);
+}
+
+.btn:hover:not(:disabled) {
+  border-color: rgba(245, 158, 11, 0.6);
+  background: var(--surface-2);
+}
+
+.btn:active:not(:disabled) {
+  transform: translateY(1px);
+}
+
+.btn:disabled {
+  opacity: 0.42;
+  cursor: not-allowed;
+  box-shadow: none;
+}
+
+.btn:focus-visible {
+  outline: 2px solid var(--focus);
+  outline-offset: 2px;
+}
+
+.btn-primary {
+  border-color: var(--accent);
+  background: var(--accent);
+  color: var(--accent-ink);
+}
+
+.btn-primary:hover:not(:disabled) {
+  border-color: var(--accent-bright);
+  background: var(--accent-bright);
+}
+
+.btn-lang {
+  min-width: 44px;
+  padding: 0 10px;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+}
+
+.icon {
+  width: 18px;
+  height: 18px;
+  flex: none;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+/* ---------------------------------------------------------------- layout */
+
+.app {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  width: min(1040px, 100%);
+  margin: 0 auto;
+  padding: 4px 16px 8px;
+}
+
+.table {
+  display: grid;
+  gap: 10px;
+  width: min(980px, 100%);
+}
+
+/* ---------------------------------------------------------------- player bars */
+
+.player {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 44px;
+  padding: 7px 14px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: rgba(30, 41, 59, 0.85);
+  box-shadow: var(--shadow-soft);
+  transition: border-color var(--t-slow) var(--ease), box-shadow var(--t-slow) var(--ease);
+}
+
+.player-dot {
+  width: 10px;
+  height: 10px;
+  flex: none;
+  border-radius: 50%;
+  background: #475569;
+  transition: background-color var(--t-slow) var(--ease), box-shadow var(--t-slow) var(--ease);
+}
+
+.player-name {
+  font-weight: 700;
+}
+
+.player-tag {
+  padding: 1px 9px;
+  border-radius: 999px;
+  background: rgba(148, 163, 184, 0.14);
+  color: var(--muted);
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.player-score-wrap {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  margin-left: auto;
+}
+
+.player-caption {
+  color: var(--muted);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.player-score {
+  min-width: 2ch;
+  font-size: 21px;
+  font-weight: 800;
+  font-variant-numeric: tabular-nums;
+  text-align: right;
+}
+
+.player.active {
+  border-color: rgba(217, 119, 6, 0.8);
+  box-shadow: 0 0 0 1px rgba(217, 119, 6, 0.45), 0 0 26px rgba(217, 119, 6, 0.18), var(--shadow-soft);
+}
+
+.player.active .player-dot {
+  background: var(--accent-bright);
+  box-shadow: 0 0 10px rgba(245, 158, 11, 0.85);
+}
+
+.player.thinking .player-dot {
+  animation: pulse 0.8s ease-in-out infinite alternate;
+}
+
+.player.winner {
+  border-color: rgba(250, 204, 21, 0.85);
+  box-shadow: 0 0 0 1px rgba(250, 204, 21, 0.5), 0 0 30px rgba(250, 204, 21, 0.2), var(--shadow-soft);
+}
+
+.player.winner .player-score {
+  color: #fcd34d;
+}
+
+/* ---------------------------------------------------------------- the wooden board */
+
+.board {
+  --gap: clamp(3px, 0.9vw, 11px);
+  --store-w: clamp(34px, 9vw, 104px);
+  --stone: clamp(9px, 2.4vw, 17px);
+  --travel: 140ms;
+  --well-shadow:
+    inset 0 clamp(3px, 0.7vw, 8px) clamp(5px, 1.3vw, 14px) rgba(0, 0, 0, 0.62),
+    inset 0 -2px 3px rgba(255, 210, 150, 0.14),
+    0 1px 0 rgba(255, 232, 196, 0.3);
+  position: relative;
+  display: grid;
+  grid-template-columns: var(--store-w) repeat(6, minmax(0, 1fr)) var(--store-w);
+  column-gap: var(--gap);
+  row-gap: clamp(8px, 1.6vw, 16px);
+  padding: clamp(9px, 2.2vw, 24px) clamp(6px, 2vw, 22px);
+  border-radius: clamp(18px, 4vw, 36px);
+  background-color: #7b4a22;
+  background-image:
+    radial-gradient(120% 70% at 50% 0%, rgba(255, 214, 160, 0.2), transparent 60%),
+    radial-gradient(ellipse 16% 6% at 26% 50%, rgba(70, 36, 12, 0.4), transparent 72%),
+    radial-gradient(ellipse 12% 4% at 74% 49%, rgba(70, 36, 12, 0.32), transparent 72%),
+    repeating-linear-gradient(177deg, rgba(255, 220, 170, 0.07) 0 2px, transparent 2px 9px),
+    repeating-linear-gradient(183deg, rgba(60, 28, 8, 0.13) 0 1px, transparent 1px 14px),
+    linear-gradient(180deg, #a56c36 0%, #8a552a 42%, #6c411f 100%);
+  box-shadow:
+    inset 0 2px 0 rgba(255, 228, 190, 0.35),
+    inset 0 -8px 18px rgba(40, 18, 4, 0.45),
+    0 0 0 1px rgba(30, 14, 4, 0.65),
+    var(--shadow);
+  touch-action: none;
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.cell {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: clamp(3px, 0.6vw, 7px);
+  min-width: 0;
+}
+
+.pit {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: inherit;
+  font: inherit;
+  cursor: default;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.pit.top,
+.store.top {
+  flex-direction: column-reverse;
+}
+
+.well {
+  position: relative;
+  display: block;
+  width: 100%;
+  border-radius: 50% / 46%;
+  background:
+    radial-gradient(ellipse 80% 60% at 50% 28%, rgba(0, 0, 0, 0.32), transparent 70%),
+    radial-gradient(ellipse at 50% 62%, #52321b 0%, #3e2310 55%, #2d1809 100%);
+  box-shadow: var(--well-shadow);
+  transition:
+    box-shadow var(--t-mid) var(--ease),
+    transform var(--t-fast) var(--ease),
+    filter var(--t-mid) var(--ease);
+}
+
+.pit .well {
+  aspect-ratio: 1 / 1;
+}
+
+.store .well {
+  flex: 1;
+  min-height: 0;
+  border-radius: 999px / 70px;
+}
+
+.count {
+  min-width: 2.1em;
+  padding: 1px 6px;
+  border-radius: 999px;
+  background: rgba(30, 16, 6, 0.55);
+  box-shadow: inset 0 1px 0 rgba(255, 235, 200, 0.12);
+  color: #fde7c2;
+  font-size: clamp(11px, 1.45vw, 15px);
+  font-weight: 700;
+  line-height: 1.3;
+  text-align: center;
+  font-variant-numeric: tabular-nums;
+  transition: background-color var(--t-mid) var(--ease), color var(--t-mid) var(--ease);
+}
+
+.store .count {
+  font-size: clamp(12px, 1.7vw, 17px);
+}
+
+/* pits the player may pick */
+.pit.playable {
+  cursor: pointer;
+}
+
+.pit.playable .well {
+  box-shadow: var(--well-shadow), 0 0 0 2px rgba(245, 158, 11, 0.95), 0 0 18px rgba(245, 158, 11, 0.42);
+}
+
+@media (hover: hover) {
+  .pit.playable:hover .well {
+    transform: translateY(-2px);
+    filter: brightness(1.14);
+  }
+}
+
+.pit.playable:active .well {
+  transform: translateY(1px);
+}
+
+.pit:focus-visible {
+  outline: none;
+}
+
+.pit:focus-visible .well {
+  outline: 3px solid var(--focus);
+  outline-offset: 3px;
+}
+
+/* the pit the last move started from */
+.cell.origin .count {
+  background: var(--accent);
+  color: var(--accent-ink);
+}
+
+/* where the last stone would land (hover or focus) */
+.cell.preview .well::after {
+  content: "";
+  position: absolute;
+  inset: -5px;
+  border: 2px dashed var(--focus);
+  border-radius: inherit;
+  pointer-events: none;
+}
+
+/* the pit that just received a stone */
+.cell.hit .well {
+  filter: brightness(1.32);
+  box-shadow: var(--well-shadow), 0 0 0 2px rgba(253, 230, 138, 0.85);
+}
+
+/* pits being captured, and the treasury receiving them */
+.cell.captured .well {
+  box-shadow: var(--well-shadow), 0 0 0 2px var(--capture), 0 0 22px rgba(248, 113, 113, 0.65);
+  animation: flash 0.5s ease-in-out infinite alternate;
+}
+
+/* ---------------------------------------------------------------- stones and the hand */
+
+.stone {
+  position: absolute;
+  left: calc(50% + var(--x) * 100%);
+  top: calc(50% + var(--y) * 100%);
+  width: var(--stone);
+  height: var(--stone);
+  margin: calc(var(--stone) / -2) 0 0 calc(var(--stone) / -2);
+  border-radius: 50%;
+  background: radial-gradient(circle at 34% 30%, rgba(255, 255, 255, 0.92) 0 9%, var(--c) 40%, var(--d) 100%);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.6), inset 0 -1px 2px rgba(0, 0, 0, 0.2);
+  pointer-events: none;
+}
+
+.stone.new {
+  animation: stone-drop 0.24s var(--ease) both;
+}
+
+.hand {
+  --size: clamp(22px, 3vw, 34px);
+  position: absolute;
+  left: 0;
+  top: 0;
+  z-index: 30;
+  display: grid;
+  place-items: center;
+  width: var(--size);
+  height: var(--size);
+  margin: calc(var(--size) / -2) 0 0 calc(var(--size) / -2);
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 30%, #fff3c4 0 10%, #fbbf24 45%, #b45309 100%);
+  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.45), 0 0 0 2px rgba(255, 255, 255, 0.55);
+  color: var(--accent-ink);
+  font-size: clamp(11px, 1.4vw, 15px);
+  font-weight: 800;
+  font-variant-numeric: tabular-nums;
+  opacity: 0;
+  pointer-events: none;
+  transform: translate(var(--hx, 0), var(--hy, 0));
+  transition: transform var(--travel) var(--ease), opacity var(--t-fast) linear;
+}
+
+.hand.visible {
+  opacity: 1;
+}
+
+.hand.jump {
+  transition: opacity var(--t-fast) linear;
+}
+
+/* ---------------------------------------------------------------- status, messages, toolbar */
+
+.feed {
+  display: grid;
+  justify-items: center;
+  gap: 6px;
+  min-height: 62px;
+  text-align: center;
+}
+
+.status {
+  margin: 0;
+  font-size: clamp(15px, 2vw, 18px);
+  font-weight: 700;
+}
+
+.status.result {
+  color: #fcd34d;
+  font-size: clamp(21px, 3vw, 28px);
+  animation: rise var(--t-slow) var(--ease);
+}
+
+.final-score {
+  margin: 0;
+  color: var(--muted);
+  font-variant-numeric: tabular-nums;
+}
+
+.events {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 6px;
+  min-height: 28px;
+}
+
+.chip {
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 12px;
+  border: 1px solid rgba(245, 158, 11, 0.5);
+  border-radius: 999px;
+  background: rgba(217, 119, 6, 0.14);
+  color: #fde7c2;
+  font-size: 13px;
+  font-weight: 600;
+  animation: rise var(--t-slow) var(--ease);
+}
+
+.chip.capture {
+  border-color: rgba(248, 113, 113, 0.55);
+  background: rgba(239, 68, 68, 0.14);
+  color: #fecaca;
+}
+
+.chip.sweep {
+  border-color: rgba(45, 212, 191, 0.5);
+  background: rgba(20, 184, 166, 0.13);
+  color: #ccfbf1;
+}
+
+.toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 8px;
+}
+
+.keys-hint {
+  display: none;
+  margin: 0;
+  color: var(--muted);
+  font-size: 13px;
+  text-align: center;
+}
+
+@media (hover: hover) and (pointer: fine) and (min-width: 760px) {
+  .keys-hint {
+    display: block;
+  }
+}
+
+/* ---------------------------------------------------------------- dialogs */
+
+dialog {
+  width: min(560px, calc(100vw - 24px));
+  max-height: calc(100dvh - 32px);
+  padding: 0;
+  overflow: auto;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--surface);
+  color: var(--text);
+  box-shadow: var(--shadow);
+}
+
+dialog[open] {
+  animation: rise var(--t-slow) var(--ease);
+}
+
+dialog::backdrop {
+  background: rgba(2, 6, 23, 0.68);
+  backdrop-filter: blur(3px);
+}
+
+.dialog-body {
+  padding: 20px;
+}
+
+.dialog-body h2 {
+  margin: 0 0 14px;
+  font-size: 20px;
+}
+
+/* the Rules title takes the focus on open, so the dialog starts at the top */
+.dialog-body h2:focus {
+  outline: none;
+}
+
+.choice {
+  margin: 0 0 16px;
+  padding: 0;
+  border: 0;
+  min-width: 0;
+}
+
+.choice legend {
+  margin-bottom: 8px;
+  padding: 0;
+  color: var(--muted);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.segmented {
+  display: grid;
+  grid-auto-columns: minmax(0, 1fr);
+  grid-auto-flow: column;
+  gap: 4px;
+  padding: 4px;
+  border-radius: var(--radius);
+  background: var(--bg);
+}
+
+.segmented label {
+  position: relative;
+  display: block;
+}
+
+.segmented input {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  opacity: 0;
+  cursor: pointer;
+}
+
+.segmented span {
+  display: grid;
+  place-items: center;
+  min-height: 40px;
+  padding: 4px 8px;
+  border-radius: 8px;
+  color: var(--muted);
+  font-size: 14px;
+  font-weight: 600;
+  text-align: center;
+  transition: background-color var(--t-fast) var(--ease), color var(--t-fast) var(--ease);
+}
+
+.segmented input:hover + span {
+  color: var(--text);
+}
+
+.segmented input:checked + span {
+  background: var(--accent);
+  color: var(--accent-ink);
+}
+
+.segmented input:focus-visible + span {
+  outline: 2px solid var(--focus);
+  outline-offset: 2px;
+}
+
+.dialog-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+  margin-top: 18px;
+}
+
+.rules-intro {
+  margin: 0 0 12px;
+  color: var(--text);
+}
+
+.rules-list {
+  display: grid;
+  gap: 9px;
+  margin: 0;
+  padding-left: 22px;
+  color: #cbd5e1;
+}
+
+.rules-list li::marker {
+  color: var(--accent-bright);
+  font-weight: 700;
+}
+
+.rules-list strong {
+  color: var(--text);
+}
+
+.rules-terms {
+  margin: 14px 0 0;
+  padding: 10px 12px;
+  border-left: 3px solid var(--accent);
+  border-radius: 8px;
+  background: rgba(217, 119, 6, 0.1);
+  color: var(--muted);
+  font-size: 14px;
+}
+
+/* ---------------------------------------------------------------- small screens */
+
+@media (max-width: 599px) {
+  .pit .well {
+    aspect-ratio: 1 / 1.6;
+  }
+}
+
+@media (max-width: 480px) {
+  .topbar {
+    padding: 10px 12px 6px;
+  }
+
+  .app {
+    gap: 10px;
+    padding: 2px 10px 6px;
+  }
+
+  .table {
+    gap: 8px;
+  }
+
+  .logo {
+    width: 30px;
+    height: 30px;
+  }
+
+  .btn {
+    padding: 0 12px;
+  }
+
+  .btn .icon:not(.icon-keep) {
+    display: none;
+  }
+
+  .topbar .btn .icon {
+    display: none;
+  }
+
+  .player {
+    min-height: 40px;
+    padding: 5px 12px;
+  }
+
+  .player-score {
+    font-size: 19px;
+  }
+
+  .chip {
+    font-size: 12px;
+  }
+}
+
+/* ---------------------------------------------------------------- motion */
+
+@keyframes stone-drop {
+  from {
+    opacity: 0;
+    transform: translateY(-80%) scale(1.3);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes flash {
+  to {
+    filter: brightness(1.35);
+  }
+}
+
+@keyframes pulse {
+  from {
+    transform: scale(0.8);
+    opacity: 0.6;
+  }
+  to {
+    transform: scale(1.25);
+    opacity: 1;
+  }
+}
+
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 1ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 1ms !important;
+  }
+}
