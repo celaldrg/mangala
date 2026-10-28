@@ -28,11 +28,16 @@ function samplePositions() {
   return positions;
 }
 
-test('AI takes an immediate even capture at every level', () => {
-  const state = createState({ board: board([0, 0, 0, 2, 4, 0], 8, [9, 3, 3, 3, 3, 3], 10) });
-  assert.equal(applyMove(state, 4).capture?.stones, 10);
+test('AI takes the one immediate even capture among six moves, at every level and seed', () => {
+  // Pit 2 is the only capture, and it is not the first, the last or the fullest pit.
+  const state = createState({ board: board([8, 2, 7, 3, 4, 3], 2, [2, 9, 2, 1, 2, 2], 1) });
+  assert.equal(legalMoves(state).length, 6);
+  assert.deepEqual(legalMoves(state).filter((pit) => applyMove(state, pit).capture), [2]);
+  assert.deepEqual(applyMove(state, 2).capture, { kind: 'even', pits: [8], stones: 10, store: 6 });
   for (const level of LEVEL_NAMES) {
-    assert.equal(chooseMove(state, { level, rng: createRng(1) }), 4, level);
+    for (let seed = 1; seed <= 4; seed += 1) {
+      assert.equal(chooseMove(state, { level, rng: createRng(seed) }), 2, `${level}, seed ${seed}`);
+    }
   }
 });
 
